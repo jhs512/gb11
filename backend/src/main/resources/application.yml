@@ -1,0 +1,23 @@
+server:
+  port: 8080
+spring:
+  output:
+    ansi:
+      enabled: always # 인텔리제이 커뮤니티에서 콘솔에 색상 출력을 위한 설정
+  datasource:
+    url: jdbc:h2:./db_dev;MODE=PostgreSQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jackson:
+    serialization:
+      fail-on-empty-beans: false # 빈 객체를 JSON으로 변환할 때 실패하지 않도록 설정, Empty 클래스 때문에 이 설정 추가
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        use_sql_comments: true
