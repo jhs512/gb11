@@ -1,6 +1,8 @@
 server:
   port: 8080
 spring:
+  profiles:
+    include: secret
   output:
     ansi:
       enabled: always # 인텔리제이 커뮤니티에서 콘솔에 색상 출력을 위한 설정
@@ -21,3 +23,29 @@ spring:
         format_sql: true
         highlight_sql: true
         use_sql_comments: true
+custom:
+  dataGoKr:
+    animalHospitals:
+      daejeon-si:
+        base:
+          queryString: 'page={page}&perPage={itemsPerPage}&serviceKey={apiKey}'
+        yuseong-gu:
+          baseUrl: 'https://api.odcloud.kr/api/15113346/v1/uddi:1fafb1f1-2aee-464b-9bd5-9a221732ed1d'
+          queryString: '${custom.dataGoKr.animalHospitals.daejeon-si.base.queryString}'
+          apiKey: '${custom.dataGoKr.animalHospitals.daejeon-si.base.apiKey}'
+        seo-gu:
+          baseUrl: 'https://api.odcloud.kr/api/15008949/v1/uddi:7a66c434-6547-4edf-8f20-f39a9043ae3e'
+          queryString: '${custom.dataGoKr.animalHospitals.daejeon-si.base.queryString}'
+          apiKey: '${custom.dataGoKr.animalHospitals.daejeon-si.base.apiKey}'
+        jung-gu:
+          baseUrl: 'https://api.odcloud.kr/api/15035719/v1/uddi:3f365aba-d1f6-46a9-b9db-b2d48e72a7fc'
+          queryString: '${custom.dataGoKr.animalHospitals.daejeon-si.base.queryString}'
+          apiKey: '${custom.dataGoKr.animalHospitals.daejeon-si.base.apiKey}'
+        daedeok-gu:
+          baseUrl: 'https://api.odcloud.kr/api/15035773/v1/uddi:a0016fe5-9afb-4de9-be80-fa196d9d76ca'
+          queryString: '${custom.dataGoKr.animalHospitals.daejeon-si.base.queryString}'
+          apiKey: '${custom.dataGoKr.animalHospitals.daejeon-si.base.apiKey}'
+        dong-gu:
+          baseUrl: 'https://api.odcloud.kr/api/15089206/v1/uddi:d34a99d5-6afb-4146-9979-b8a65f0ca4d3'
+          queryString: '${custom.dataGoKr.animalHospitals.daejeon-si.base.queryString}'
+          apiKey: '${custom.dataGoKr.animalHospitals.daejeon-si.base.apiKey}'
