@@ -1,7 +1,6 @@
 package com.ll.gb.domain.animalHospital.animalHost.service;
 
 import com.ll.gb.domain.address.address.service.AddressService;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +37,32 @@ public class AnimalHospitalService {
     private com.ll.gb.domain.animalHospital.proxy.dataGoKr.service.AnimalHospitalService daejeon_Dong_animalHospitalService;
 
     @Getter
-    @AllArgsConstructor
     public static class AnimalHospitalDto {
         private String name;
         private String lotBasedAddress;
         private String roadBasedAddress;
         private Double longitude;
         private Double latitude;
+
+        public AnimalHospitalDto(String name, String lotBasedAddress, String roadBasedAddress, Double longitude, Double latitude) {
+            if (name == null) {
+                name = "";
+            }
+
+            if (lotBasedAddress == null) {
+                lotBasedAddress = "";
+            }
+
+            if (roadBasedAddress == null) {
+                roadBasedAddress = "";
+            }
+
+            this.name = name;
+            this.lotBasedAddress = lotBasedAddress;
+            this.roadBasedAddress = roadBasedAddress;
+            this.longitude = longitude;
+            this.latitude = latitude;
+        }
     }
 
     public List<AnimalHospitalDto> findItemsFromDataGoKr() {
@@ -73,7 +91,15 @@ public class AnimalHospitalService {
             List<AnimalHospitalDto> animalHospitalDtos
     ) {
         service.getAnimalHospitals(1, 50).getContent().forEach(dto -> {
-            AddressService.Coordinate coordinate = addressService.roadBasedAddressToCoordinate(dto.getRoadBasedAddress());
+            AddressService.Coordinate coordinate = AddressService.Coordinate.empty();
+
+            if (coordinate.isNull() && !dto.getRoadBasedAddress().isBlank()) {
+                coordinate = addressService.roadBasedAddressToCoordinate(dto.getRoadBasedAddress());
+            }
+
+            if (coordinate.isNull() && !dto.getLotBasedAddress().isBlank()) {
+                coordinate = addressService.roadBasedAddressToCoordinate(dto.getLotBasedAddress());
+            }
 
             animalHospitalDtos.add(new AnimalHospitalDto(
                     dto.getName(),
