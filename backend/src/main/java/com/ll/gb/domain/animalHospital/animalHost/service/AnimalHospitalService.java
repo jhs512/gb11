@@ -49,67 +49,39 @@ public class AnimalHospitalService {
 
     public List<AnimalHospitalDto> findItemsFromDataGoKr() {
         List<AnimalHospitalDto> animalHospitalDtos = new ArrayList<>();
+        List<com.ll.gb.domain.animalHospital.proxy.dataGoKr.service.AnimalHospitalService> services = getAnimalHospitalServices();
 
-        daejeon_Yuseong_animalHospitalService.getAnimalHospitals(1, 50).getContent().forEach(animalHospitalDto -> {
-            AddressService.Coordinate coordinate = addressService.roadBasedAddressToCoordinate(animalHospitalDto.getRoadBasedAddress());
-
-            animalHospitalDtos.add(new AnimalHospitalDto(
-                    animalHospitalDto.getName(),
-                    animalHospitalDto.getLotBasedAddress(),
-                    animalHospitalDto.getRoadBasedAddress(),
-                    coordinate.getLongitude(),
-                    coordinate.getLatitude()
-            ));
-        });
-
-        daejeon_Daedeok_animalHospitalService.getAnimalHospitals(1, 50).getContent().forEach(animalHospitalDto -> {
-            AddressService.Coordinate coordinate = addressService.roadBasedAddressToCoordinate(animalHospitalDto.getRoadBasedAddress());
-
-            animalHospitalDtos.add(new AnimalHospitalDto(
-                    animalHospitalDto.getName(),
-                    animalHospitalDto.getLotBasedAddress(),
-                    animalHospitalDto.getRoadBasedAddress(),
-                    coordinate.getLongitude(),
-                    coordinate.getLatitude()
-            ));
-        });
-
-        daejeon_Seo_animalHospitalService.getAnimalHospitals(1, 50).getContent().forEach(animalHospitalDto -> {
-            AddressService.Coordinate coordinate = addressService.roadBasedAddressToCoordinate(animalHospitalDto.getRoadBasedAddress());
-
-            animalHospitalDtos.add(new AnimalHospitalDto(
-                    animalHospitalDto.getName(),
-                    animalHospitalDto.getLotBasedAddress(),
-                    animalHospitalDto.getRoadBasedAddress(),
-                    coordinate.getLongitude(),
-                    coordinate.getLatitude()
-            ));
-        });
-
-        daejeon_Jung_animalHospitalService.getAnimalHospitals(1, 50).getContent().forEach(animalHospitalDto -> {
-            AddressService.Coordinate coordinate = addressService.roadBasedAddressToCoordinate(animalHospitalDto.getRoadBasedAddress());
-
-            animalHospitalDtos.add(new AnimalHospitalDto(
-                    animalHospitalDto.getName(),
-                    animalHospitalDto.getLotBasedAddress(),
-                    animalHospitalDto.getRoadBasedAddress(),
-                    coordinate.getLongitude(),
-                    coordinate.getLatitude()
-            ));
-        });
-
-        daejeon_Dong_animalHospitalService.getAnimalHospitals(1, 50).getContent().forEach(animalHospitalDto -> {
-            AddressService.Coordinate coordinate = addressService.roadBasedAddressToCoordinate(animalHospitalDto.getRoadBasedAddress());
-
-            animalHospitalDtos.add(new AnimalHospitalDto(
-                    animalHospitalDto.getName(),
-                    animalHospitalDto.getLotBasedAddress(),
-                    animalHospitalDto.getRoadBasedAddress(),
-                    coordinate.getLongitude(),
-                    coordinate.getLatitude()
-            ));
-        });
+        services.forEach(service ->
+                processAnimalHospitalService(service, animalHospitalDtos)
+        );
 
         return animalHospitalDtos;
+    }
+
+    private List<com.ll.gb.domain.animalHospital.proxy.dataGoKr.service.AnimalHospitalService> getAnimalHospitalServices() {
+        return List.of(
+                daejeon_Yuseong_animalHospitalService,
+                daejeon_Daedeok_animalHospitalService,
+                daejeon_Seo_animalHospitalService,
+                daejeon_Jung_animalHospitalService,
+                daejeon_Dong_animalHospitalService
+        );
+    }
+
+    private void processAnimalHospitalService(
+            com.ll.gb.domain.animalHospital.proxy.dataGoKr.service.AnimalHospitalService service,
+            List<AnimalHospitalDto> animalHospitalDtos
+    ) {
+        service.getAnimalHospitals(1, 50).getContent().forEach(dto -> {
+            AddressService.Coordinate coordinate = addressService.roadBasedAddressToCoordinate(dto.getRoadBasedAddress());
+
+            animalHospitalDtos.add(new AnimalHospitalDto(
+                    dto.getName(),
+                    dto.getLotBasedAddress(),
+                    dto.getRoadBasedAddress(),
+                    coordinate.getLongitude(),
+                    coordinate.getLatitude()
+            ));
+        });
     }
 }
